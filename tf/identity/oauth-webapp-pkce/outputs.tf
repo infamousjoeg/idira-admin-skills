@@ -18,6 +18,11 @@ output "redirect_uri_to_set" {
   value       = var.redirect_uri
 }
 
+output "pkce_to_enforce" {
+  description = "Reminder: cyberark/idsec v0.3.3 doesn't expose `RequirePKCE`. The app is created with AuthorizationCode flow enabled, but PKCE enforcement must be toggled separately via `ark exec identity oauth-app update --service-name <service_name> --require-pkce true` or the admin UI checkbox. This is a known follow-up alongside `redirect_uri_to_set`."
+  value       = contains(var.allowed_auth_methods, "AuthorizationCode")
+}
+
 output "allowed_auth_methods" {
   description = "OAuth2 grant types enabled on the app. PKCE-only by default."
   value       = var.allowed_auth_methods

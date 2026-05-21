@@ -72,23 +72,30 @@ variable "allow_refresh" {
 
 variable "allowed_auth_methods" {
   description = <<-EOT
-    OAuth2 grant types the app accepts. Defaults to PKCE-only — strict modern public-client posture.
+    OAuth2 grant types the app accepts. Values accepted by `cyberark/idsec` v0.3.3:
+      - `AuthorizationCode` — authorization-code flow (use for PKCE public clients; see note below)
+      - `ClientCreds`       — client_credentials (machine-to-machine, requires Service User)
+      - `Implicit`          — implicit grant (deprecated, do not enable)
+      - `ResourceCreds`     — ROPC / Resource Owner Password Credentials (do not enable)
 
-    Known values (per `~/Documents/Projects/panw/memory/cyberark-tenant.md`):
-      - "AuthCodeWithPKCE"  — authorization-code flow with PKCE (public client, NO client_secret stored anywhere)
-      - "AuthCode"          — authorization-code without PKCE (NOT recommended; legacy)
-      - "ClientCreds"       — client_credentials (machine-to-machine, requires Service User)
-      - "Implicit"          — implicit grant (deprecated, do not enable)
-      - "ResourceOwner"     — ROPC (do not enable)
-
-    For an MCP, use the default `["AuthCodeWithPKCE"]`. If you also need machine-to-machine alongside, add `"ClientCreds"`.
+    **Important:** the v0.3.3 schema does NOT yet expose an explicit `require_pkce` /
+    `RequirePKCE` attribute. Setting `allowed_auth = ["AuthorizationCode"]` permits the
+    auth-code flow but does NOT by itself enforce PKCE. After `terraform apply`, the
+    module emits a `pkce_to_enforce` output reminding you to set `RequirePKCE: true` on
+    the app via `ark exec identity oauth-app update` (or the admin UI) until the
+    provider exposes the field. See module README.
   EOT
   type        = list(string)
-  default     = ["AuthCodeWithPKCE"]
+  default     = ["AuthorizationCode"]
 
   validation {
     condition     = length(var.allowed_auth_methods) > 0
     error_message = "At least one auth method must be allowed."
+  }
+
+  validation {
+    condition     = alltrue([for m in var.allowed_auth_methods : contains(["AuthorizationCode", "ClientCreds", "Implicit", "ResourceCreds"], m)])
+    error_message = "allowed_auth_methods values must be one of: AuthorizationCode, ClientCreds, Implicit, ResourceCreds."
   }
 }
 

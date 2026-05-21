@@ -5,10 +5,20 @@
 # for public PKCE clients (MCPs, local CLIs, native apps) with the strict
 # no-client-secret posture documented in ~/Documents/Projects/panw/memory/cyberark-tenant.md.
 #
-# Provider auth: `cyberark/idsec` resolves its tenant URL + credentials from
-# ARK_USERNAME / ARK_SECRET env vars (Service User), populated by lib/auth.sh
-# in this repo. Don't set them inline.
+# Provider auth: `cyberark/idsec` reads credentials from these env vars (set by
+# lib/auth.sh + lib/discovery.sh — see lib/tf-wrap.sh):
+#   IDSEC_SERVICE_USER         = Identity Service User login
+#   IDSEC_SERVICE_TOKEN        = Identity Service User secret
+#   IDSEC_SUBDOMAIN            = tenant subdomain (e.g., "infamous")
+#   IDSEC_SERVICE_AUTHORIZED_APP = OAuth2 app slug (default __idaptive_cybr_user_oidc)
+# Never commit these values; never set them in tfvars.
 ################################################################################
+
+provider "idsec" {
+  auth_method = "identity_service_user"
+  # Other config (subdomain, service_user, service_token, service_authorized_app)
+  # comes from IDSEC_* env vars — see header comment.
+}
 
 resource "idsec_identity_webapp" "this" {
   template_name        = "OAuth2Server"
