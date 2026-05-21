@@ -28,7 +28,11 @@ source "${_AUTH_REPO_ROOT}/lib/discovery.sh"
 mint_identity_token() {
   _ensure_discovered || return 1
 
-  local app_id="${CYBERARK_IDENTITY_OAUTH_APP:-cyberark_apis}"
+  # Default OAuth2 app ID for Service User token mint. Tenants vary — `cyberark_apis`
+  # is documented in older content but isn't always present. `__idaptive_cybr_user_oidc`
+  # is the historical default that's still present on `infamous` (verified 2026-05-21).
+  # Override via env if your tenant uses a different app slug.
+  local app_id="${CYBERARK_IDENTITY_OAUTH_APP:-__idaptive_cybr_user_oidc}"
   local endpoint="${CYBERARK_IDENTITY_API_URL}/Oauth2/Token/${app_id}"
 
   # Get creds into env vars in-process; never write to disk.
@@ -53,6 +57,14 @@ mint_identity_token() {
 }
 
 # ark_service_user_login: configures and logs in `ark` CLI as the Service User. Idempotent.
+#
+# IMPORTANT: ark v2.0–2.1 doesn't accept the service-user secret via env var or stdin,
+# only via the `--isp-secret` CLI flag. That means the secret is briefly visible in
+# `ps auxww` output during the login call. For Joe's single-user macOS workstation this
+# is acceptable; for multi-tenant CI / shared servers, treat as a known gap and pursue
+# upstream support for ARK_SECRET env var in cyberark/ark-sdk-python.
+#
+# The profile name is fixed at `idira-admin` so all `ark exec` callers can reference it.
 ark_service_user_login() {
   _ensure_discovered || return 1
   if ! command -v ark >/dev/null 2>&1; then
@@ -60,10 +72,28 @@ ark_service_user_login() {
     return 127
   fi
   _auth_load_credentials || return 1
-  # Use ark's built-in service-user auth.
-  ARK_USERNAME="$CYBERARK_SERVICE_USER" \
-  ARK_SECRET="$CYBERARK_SERVICE_USER_SECRET" \
-    ark login --silent --type=identity_service_user
+
+  local profile="${CYBERARK_ARK_PROFILE:-idira-admin}"
+  local subdomain="${CYBERARK_TENANT_SUBDOMAIN:-infamous}"
+
+  # Configure the profile (idempotent — overwrites existing on same name).
+  ark configure --silent \
+    --work-with-isp \
+    --isp-auth-method identity_service_user \
+    --isp-username "$CYBERARK_SERVICE_USER" \
+    --isp-identity-tenant-subdomain "$subdomain" \
+    --profile-name "$profile" >/dev/null 2>&1
+
+  # Log in. Secret on CLI is unavoidable in ark v2.x (see comment above).
+  ark login --silent \
+    --profile-name "$profile" \
+    --isp-username "$CYBERARK_SERVICE_USER" \
+    --isp-secret "$CYBERARK_SERVICE_USER_SECRET" >/dev/null 2>&1
+}
+
+# ark_profile: echoes the configured ark profile name so callers can pass --profile-name.
+ark_profile() {
+  echo "${CYBERARK_ARK_PROFILE:-idira-admin}"
 }
 
 # ─── Internal ───────────────────────────────────────────────────────────────
@@ -97,11 +127,19 @@ _auth_load_credentials() {
 
 # Joe's default: Summon+Conceal pulls creds from macOS Keychain. We spawn a subshell that
 # inherits SUMMON_PROVIDER_PATH'd values without ever touching disk.
+#
+# Note: the Summon-compatible provider name is `conceal_summon` (created by
+# `conceal summon install`), NOT `conceal`. The raw `conceal` CLI defaults to
+# clipboard output, which Summon can't consume.
 _auth_get_conceal() {
   if ! command -v summon >/dev/null 2>&1 || ! command -v conceal >/dev/null 2>&1; then
     echo "auth.sh: summon and/or conceal not on PATH. See https://cyberark.github.io/summon/ + https://github.com/cyberark/conceal" >&2
     return 127
   fi
+
+  # Provider name installed by `conceal summon install`. Override if user has
+  # a different wrapper name (rare).
+  local provider="${CYBERARK_CONCEAL_PROVIDER:-conceal_summon}"
 
   local id_path="${CYBERARK_CONCEAL_CLIENT_ID_PATH:-infamousdev/claudecode/client_id}"
   local secret_path="${CYBERARK_CONCEAL_CLIENT_SECRET_PATH:-infamousdev/claudecode/client_secret}"
@@ -109,7 +147,7 @@ _auth_get_conceal() {
   # Use summon to inject values as env vars into THIS shell via process substitution.
   # The trick: summon prints `export FOO=...` lines we eval; we trap to clear afterward.
   local out
-  out=$(summon -p conceal --yaml "
+  out=$(summon -p "$provider" --yaml "
 CYBERARK_SERVICE_USER: !var ${id_path}
 CYBERARK_SERVICE_USER_SECRET: !var ${secret_path}
 " -- /usr/bin/env | grep -E '^CYBERARK_SERVICE_USER' || true)
@@ -166,8 +204,8 @@ _auth_get_aws_sm() {
   export CYBERARK_SERVICE_USER_SECRET=$(jq -r '.client_secret' <<<"$secret")
 }
 
-# If invoked directly with a subcommand, dispatch.
-if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
+# If invoked directly (not sourced), dispatch on subcommand.
+if ! (return 0 2>/dev/null); then
   case "${1:-}" in
     mint-identity-token) mint_identity_token ;;
     ark-login)           ark_service_user_login ;;

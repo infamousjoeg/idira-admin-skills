@@ -57,3 +57,4 @@ node_modules/
 
 # --- MkDocs build artifact ---
 site/
+.playwright-mcp/

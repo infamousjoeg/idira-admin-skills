@@ -61,7 +61,9 @@ discover() {
 
 _discovery_cache_stale() {
   local cache="$1"
-  local now mtime age
+  local now
+  local mtime
+  local age
   now=$(date +%s)
   if stat --version 2>/dev/null | grep -q GNU; then
     mtime=$(stat -c %Y "$cache")           # GNU stat
@@ -73,8 +75,13 @@ _discovery_cache_stale() {
 }
 
 _discovery_get() {
-  local cache="$1" path="$2" val
-  val=$(jq -r "${path} // empty" "$cache" 2>/dev/null)
+  local cache="$1"
+  # NOTE: do NOT name this var `path` — that's a zsh-reserved array (the
+  # tied counterpart of $PATH). Shadowing it inside a function breaks
+  # external-command resolution (jq, curl, etc.) for the function body.
+  local jq_path="$2"
+  local val
+  val=$(jq -r "${jq_path} // empty" "$cache" 2>/dev/null)
   [[ -n "$val" ]] && echo "$val"
 }
 
@@ -85,7 +92,9 @@ discover_show() {
   env | grep '^CYBERARK_' | sort
 }
 
-# If invoked directly (not sourced), run discover_show.
-if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
+# If invoked directly (not sourced), run discover_show. We detect "sourced" with
+# `(return 0 2>/dev/null)` — only valid in a sourced context, so it returns 0
+# when sourced and non-zero when executed.
+if ! (return 0 2>/dev/null); then
   discover_show "$@"
 fi

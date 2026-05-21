@@ -43,19 +43,19 @@ done
 
 # Discover URLs + log in Service User via ark
 _ensure_discovered
-ark_service_user_login >/dev/null
+ark_service_user_login
 
-# Fetch profiles.
-# ark exec identity policies list-authentication-profiles returns a JSON array.
-# Output (full): pipe to jq for filtering / projection.
-output=$(ark exec --raw identity policies list-authentication-profiles 2>&1)
+PROFILE=$(ark_profile)
+
+# Fetch profiles via ark. Field names are lowercase (.uuid, .name).
+output=$(ark exec --profile-name "$PROFILE" --raw identity policies list-authentication-profiles 2>/dev/null)
 
 if [[ -n "$FILTER" ]]; then
-  output=$(jq --arg f "$FILTER" '[.[] | select(.Name | test($f; "i"))]' <<<"$output")
+  output=$(jq --arg f "$FILTER" '[.[] | select(.name | test($f; "i"))]' <<<"$output")
 fi
 
 if [[ "$NAMES_ONLY" -eq 1 ]]; then
-  jq -r '.[] | "\(.Uuid)  \(.Name)"' <<<"$output"
+  jq -r '.[] | "\(.uuid)  \(.name)"' <<<"$output"
 else
   echo "$output" | jq .
 fi

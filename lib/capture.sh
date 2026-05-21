@@ -42,8 +42,8 @@ capture_audit() {
     >> "${audit_dir}/${date_str}.jsonl"
 }
 
-# If invoked directly:
-if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
+# If invoked directly (not sourced), dispatch on subcommand.
+if ! (return 0 2>/dev/null); then
   case "${1:-}" in
     new-draft) shift; capture_new_draft "$@" ;;
     audit)     shift; capture_audit "$@" ;;
