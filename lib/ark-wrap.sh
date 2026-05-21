@@ -66,4 +66,4 @@ if [[ $mutation -eq 1 && $rc -eq 0 ]]; then
   capture_audit "ark-${service}-${sub}-${action}" "ark:${service}.${sub}" "{\"args\":\"$*\"}" "applied"
 fi
 
-exit $rc
+exit "$rc"

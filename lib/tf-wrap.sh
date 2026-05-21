@@ -40,7 +40,7 @@ module="$(cd "$module" && pwd)"
 
 # Compute a stable state path under state/<area>/<op>/ for non-inbox modules,
 # state/_inbox/<draft>/ for inbox drafts.
-relpath="${module#${_TFW_REPO_ROOT}/}"
+relpath="${module#"${_TFW_REPO_ROOT}"/}"
 state_dir="${_TFW_REPO_ROOT}/state/${relpath#tf/}"
 mkdir -p "$state_dir"
 
@@ -60,6 +60,15 @@ else
   echo "  https://developer.hashicorp.com/terraform/install" >&2
   exit 127
 fi
+
+# Best-effort: peek at versions.tf for the primary provider name (for audit log tag).
+_tfw_provider_used() {
+  if [[ -f "${module}/versions.tf" ]]; then
+    grep -oE 'source\s*=\s*"cyberark/[a-z]+"' "${module}/versions.tf" | head -1 | sed -E 's/.*"(cyberark\/[a-z]+)".*/\1/'
+  else
+    echo "unknown"
+  fi
+}
 
 # Slug for audit logging.
 op_slug="${relpath#tf/}"
@@ -123,12 +132,3 @@ case "$action" in
     exit 2
     ;;
 esac
-
-_tfw_provider_used() {
-  # Best-effort: peek at versions.tf for the primary provider.
-  if [[ -f "${module}/versions.tf" ]]; then
-    grep -oE 'source\s*=\s*"cyberark/[a-z]+"' "${module}/versions.tf" | head -1 | sed -E 's/.*"(cyberark\/[a-z]+)".*/\1/'
-  else
-    echo "unknown"
-  fi
-}

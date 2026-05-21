@@ -37,7 +37,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ludeeus/action-shellcheck@master
         env:
-          SHELLCHECK_OPTS: -e SC1091  # we source siblings via known relative path
+          # SC1091: we source siblings via known relative path (CI can't follow at lint time)
+          # SC2155: declare/assign-separately — cosmetic for our short jq one-liners
+          SHELLCHECK_OPTS: -e SC1091 -e SC2155
 
   yamllint:
     name: yamllint
@@ -60,11 +62,12 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: docs/requirements.txt
 
       - name: Install MkDocs + Material + plugins
         run: |
           pip install --upgrade pip
-          pip install mkdocs-material pymdown-extensions
+          pip install -r docs/requirements.txt
 
       - name: Build catalog pages
         run: python docs/_build.py

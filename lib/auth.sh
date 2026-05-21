@@ -119,8 +119,10 @@ CYBERARK_SERVICE_USER_SECRET: !var ${secret_path}
     return 1
   fi
 
+  # Each line is `NAME=value`; eval-export (the var name varies, not a static literal).
   while IFS= read -r line; do
-    export "$line"
+    # shellcheck disable=SC2163  # `export -- NAME=val` IS a proper export when line is `NAME=val`
+    export "${line?}"
   done <<<"$out"
 }
 
