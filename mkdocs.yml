@@ -104,11 +104,11 @@ nav:
   - Adapt for your tenant: adapt-for-your-tenant.md
   - Catalog:
       - ops/index.md
-      - Identity: ops/identity/
-      - Secrets Manager: ops/secrets-manager/
-      - Privilege Cloud: ops/privilege-cloud/
-      - SIA: ops/sia/
-      - Secrets Hub: ops/secrets-hub/
-      - Connector Manager: ops/connector-manager/
-      - Scripts: ops/scripts/
+      - Identity: ops/identity/index.md
+      - Secrets Manager: ops/secrets-manager/index.md
+      - Privilege Cloud: ops/privilege-cloud/index.md
+      - SIA: ops/sia/index.md
+      - Secrets Hub: ops/secrets-hub/index.md
+      - Connector Manager: ops/connector-manager/index.md
+      - Scripts: ops/scripts/index.md
   - GitHub: https://github.com/infamousjoeg/idira-admin-skills

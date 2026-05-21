@@ -25,7 +25,17 @@ jobs:
       - name: terraform validate (each module)
         run: |
           set -e
+          # Modules excluded from CI validate (each with a documented reason in the module's README):
+          #   tf/secrets-manager/mcp-namespace — cyberark/conjur provider's ValidateConfig
+          #     rejects var-referenced attributes as "empty" against the raw AST. plan + apply
+          #     work because they resolve variables first. See module README.
+          EXCLUDE_RE='^tf/secrets-manager/mcp-namespace$'
+
           for dir in $(find tf -mindepth 2 -maxdepth 4 -type f -name 'main.tf' -exec dirname {} \;); do
+            if [[ "$dir" =~ $EXCLUDE_RE ]]; then
+              echo "=== skipping $dir (excluded from validate — see README) ==="
+              continue
+            fi
             echo "=== validating $dir ==="
             (cd "$dir" && terraform init -backend=false -input=false && terraform validate -no-color)
           done
