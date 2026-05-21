@@ -609,6 +609,9 @@ body, .md-typeset {
   height: 32px;
   background: linear-gradient(180deg, rgba(229, 234, 245, 0.6) 0%, transparent 100%);
 }
+@media (max-width: 720px) {
+  .idira-hero__scroll-cue { display: none; }
+}
 @keyframes idira-scroll-pulse {
   0%, 100% { opacity: 0.4; transform: translate(-50%, 0); }
   50%      { opacity: 0.9; transform: translate(-50%, 4px); }
