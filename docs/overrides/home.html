@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{# Home page gets a full-bleed canvas — no sidebar grid, no breadcrumbs, no
+   surrounding article whitespace. The page content drives its own layout. #}
+
+{% block container %}
+  <div class="md-content idira-home" data-md-component="content">
+    <article class="md-content__inner md-typeset idira-home__article">
+      {{ page.content }}
+    </article>
+  </div>
+{% endblock %}
+
+{# Suppress the default breadcrumb + edit-this-page on the landing. #}
+{% block content %}{% endblock %}
+{% block source_file %}{% endblock %}

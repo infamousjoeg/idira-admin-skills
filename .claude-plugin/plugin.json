@@ -1,0 +1,32 @@
+{
+  "name": "idira-admin-skills",
+  "version": "0.1.0",
+  "description": "Claude Code plugin + Terraform catalog for administering Idira (CyberArk Identity Security Platform) tenants via natural-language prompts. Captures successful ad-hoc operations as reusable Terraform modules and ark CLI recipes.",
+  "author": {
+    "name": "Joe Garcia",
+    "url": "https://github.com/infamousjoeg"
+  },
+  "homepage": "https://infamousjoeg.github.io/idira-admin-skills/",
+  "repository": "https://github.com/infamousjoeg/idira-admin-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cyberark",
+    "idira",
+    "identity-security",
+    "secrets-manager",
+    "privilege-cloud",
+    "terraform",
+    "ark-cli",
+    "claude-code-plugin"
+  ],
+  "skills": [
+    ".claude/skills/idira-admin-router",
+    ".claude/skills/idira-capture"
+  ],
+  "commands": [
+    ".claude/commands/ca-promote.md",
+    ".claude/commands/ca-plan.md",
+    ".claude/commands/ca-audit.md",
+    ".claude/commands/ca-list.md"
+  ]
+}

@@ -1,0 +1,59 @@
+# --- Confidential / brand source ---
+*.pptx
+*.pptm
+*.ppt
+docs/assets/source-pptx/
+
+# --- Captured drafts awaiting promotion ---
+_inbox/
+
+# --- Audit log (contains tenant identifiers) ---
+audit/
+
+# --- Terraform state ---
+state/
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+
+# --- Cached Platform Discovery responses ---
+cache/
+
+# --- Local env / secrets ---
+.env
+.env.*
+*.secrets.yml
+secrets.yml
+
+# --- Per-tenant tfvars (anything except .example) ---
+*.tfvars
+!*.tfvars.example
+!examples/**/*.tfvars
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Python (ark CLI) ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# --- Node (docs tooling, if any) ---
+node_modules/
+
+# --- MkDocs build artifact ---
+site/

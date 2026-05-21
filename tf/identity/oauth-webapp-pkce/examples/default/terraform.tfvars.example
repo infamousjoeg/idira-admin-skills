@@ -1,0 +1,29 @@
+###############################################################################
+# Example tfvars — copy to `terraform.tfvars` and adjust for your tenant.
+#
+# This example creates an OAuth2 PKCE webapp suitable for a local MCP server,
+# matching Joe's `infamous` tenant conventions (per
+# ~/Documents/Projects/panw/memory/cyberark-tenant.md). For other tenants:
+# change `app_name` + `service_name`, then re-run.
+###############################################################################
+
+app_name     = "MCP — Witty Muffin"
+service_name = "witty-muffin"
+description  = "PKCE OAuth2 webapp for the Witty Muffin MCP demo. Created by idira-admin-skills."
+
+# Default PKCE-required public-client posture. Don't change without security review.
+# allowed_auth_methods = ["AuthCodeWithPKCE"]
+# must_be_oauth_client = true
+
+# Standard MCP local-dev callback. Override for hosted MCPs.
+# redirect_uri = "http://localhost:3000/callback"
+
+# Default scope = `api` (works for the `ark` SDK and Service-User-style clients).
+# scopes = [{ scope = "api", description = "Full Identity Security Platform API access" }]
+
+# 5-hour access tokens, with refresh enabled.
+# token_lifetime = "0.05:00:00"
+# allow_refresh  = true
+
+# Skip the in-corp-IP auth-rule profile injection. Set to a UUID for stricter prod use.
+# auth_rule_profile_id = null

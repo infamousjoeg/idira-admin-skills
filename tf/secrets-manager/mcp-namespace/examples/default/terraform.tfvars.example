@@ -1,0 +1,26 @@
+###############################################################################
+# Example tfvars — copy to `terraform.tfvars` and adjust.
+#
+# Creates a per-MCP namespace pair on Joe's `infamous` tenant for the
+# `witty-muffin` MCP demo. Prerequisites: `data/mcp/server` and `data/mcp/user`
+# must already exist (see module README).
+###############################################################################
+
+mcp_name = "witty-muffin"
+
+# Add Joe as the initial user with access to this MCP's secrets.
+# Identity users are auto-provisioned in Conjur on first OAuth2 auth.
+initial_user_email = "joegarcia@infamous.dev"
+
+# Defaults — uncomment to override:
+# parent_server_branch = "data/mcp/server"
+# parent_user_branch   = "data/mcp/user"
+# group_name           = "users"
+# privileges           = ["read", "execute"]
+
+# Optional annotations applied to all created branches and the group:
+# annotations = {
+#   environment = "demo"
+#   owner       = "joegarcia@infamous.dev"
+#   cost_center = "pmm-identity"
+# }

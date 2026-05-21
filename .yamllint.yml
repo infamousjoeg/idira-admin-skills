@@ -1,0 +1,20 @@
+extends: default
+
+rules:
+  line-length:
+    max: 200
+    level: warning
+  document-start: disable
+  truthy:
+    check-keys: false  # GitHub Actions uses "on:" which yamllint flags
+  comments:
+    min-spaces-from-content: 1
+
+ignore: |
+  .terraform/
+  state/
+  cache/
+  _inbox/
+  audit/
+  site/
+  node_modules/

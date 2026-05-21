@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: Terraform fmt + validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9"
+          terraform_wrapper: false
+
+      - name: terraform fmt check
+        run: terraform fmt -check -recursive tf/
+
+      - name: terraform validate (each module)
+        run: |
+          set -e
+          for dir in $(find tf -mindepth 2 -maxdepth 4 -type f -name 'main.tf' -exec dirname {} \;); do
+            echo "=== validating $dir ==="
+            (cd "$dir" && terraform init -backend=false -input=false && terraform validate -no-color)
+          done
+
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: -e SC1091  # we source siblings via known relative path
+
+  yamllint:
+    name: yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: karancode/yamllint-github-action@master
+        with:
+          yamllint_strict: false
+          yamllint_comment: false
+          yamllint_config_filepath: .yamllint.yml
+
+  mkdocs:
+    name: mkdocs build (strict)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install MkDocs + Material + plugins
+        run: |
+          pip install --upgrade pip
+          pip install mkdocs-material pymdown-extensions
+
+      - name: Build catalog pages
+        run: python docs/_build.py
+
+      - name: Build site (strict)
+        run: mkdocs build --strict

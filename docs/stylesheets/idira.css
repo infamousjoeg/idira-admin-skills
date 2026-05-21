@@ -1,0 +1,1293 @@
+/* ============================================================================
+ * Idira Admin Skills — visual identity
+ *
+ * Inspired by the publicly-attested Idira Identity Blue palette from the
+ * November 2025 Identity Platform Brand Supplement. Hex codes only;
+ * no extracted Idira logos / icons / images are redistributed.
+ *
+ * Aesthetic: architectural-editorial × technical-blueprint.
+ * Type pairing: Fraunces (display, variable) + IBM Plex Sans (body)
+ *             + JetBrains Mono (code) + Fragment Mono (tabular display).
+ * ========================================================================== */
+
+:root {
+  /* ─── Idira Identity Blue palette ──────────────────────────────────────── */
+  --idira-blue-1000: #061D63;   /* darkest — hero backgrounds, deep accents */
+  --idira-blue-900:  #0B287E;   /* (derived) — secondary deep */
+  --idira-blue-750:  #173EB8;   /* dark — headings, primary buttons */
+  --idira-blue-500:  #265BFF;   /* PRIMARY brand color */
+  --idira-blue-250:  #6186FC;   /* light — links, hover states */
+  --idira-blue-100:  #ADC0FC;   /* very light — backgrounds, borders */
+  --idira-blue-050:  #E4ECFE;   /* (derived) — surface */
+
+  /* ─── Editorial neutrals ─────────────────────────────────────────────── */
+  --idira-cream:     #FBF8F3;   /* warm off-white — editorial body bg */
+  --idira-paper:     #F5F1E9;   /* deeper cream — alternating sections */
+  --idira-rule:      #1A1F2E;   /* near-black for fine rules */
+  --idira-neutral-900: #0B0F1E;
+  --idira-neutral-700: #595959;
+  --idira-neutral-500: #8A8A8A;
+  --idira-neutral-300: #C7C7C7;
+  --idira-neutral-200: #E9E9E9;
+  --idira-neutral-100: #F3F3F3;
+  --idira-neutral-0:   #FFFFFF;
+
+  /* Functional accents (used very sparingly) */
+  --idira-accent-success: #00CC66;
+  --idira-accent-warn:    #FFCB06;
+  --idira-accent-danger:  #C84624;
+  --idira-accent-info:    #00C0E8;
+
+  /* ─── Type families ─────────────────────────────────────────────────── */
+  --font-display: "Fraunces", "Iowan Old Style", "Georgia", serif;
+  --font-body:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-numeric: "Fragment Mono", "JetBrains Mono", monospace;
+
+  /* ─── Spacing scale ─────────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+}
+
+/* ─── Material theme variable overrides (light) ──────────────────────── */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:           var(--idira-blue-500);
+  --md-primary-fg-color--light:    var(--idira-blue-250);
+  --md-primary-fg-color--dark:     var(--idira-blue-750);
+  --md-accent-fg-color:            var(--idira-blue-500);
+  --md-accent-fg-color--transparent: rgba(38, 91, 255, 0.08);
+  --md-typeset-a-color:            var(--idira-blue-500);
+  --md-code-bg-color:              var(--idira-paper);
+  --md-code-fg-color:              var(--idira-rule);
+  --md-code-hl-color:              var(--idira-blue-100);
+  --md-code-hl-color--light:       rgba(38, 91, 255, 0.1);
+  --md-default-bg-color:           var(--idira-cream);
+  --md-default-fg-color:           var(--idira-rule);
+  --md-default-fg-color--light:    #2A3142;
+  --md-typeset-color:              var(--idira-rule);
+}
+
+/* ─── Material theme variable overrides (dark/slate) ──────────────────── */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:           var(--idira-blue-1000);
+  --md-primary-fg-color--light:    var(--idira-blue-750);
+  --md-primary-fg-color--dark:     #020D2E;
+  --md-accent-fg-color:            var(--idira-blue-250);
+  --md-typeset-a-color:            var(--idira-blue-250);
+  --md-default-bg-color:           #060A1A;
+  --md-default-bg-color--light:    #0E142A;
+  --md-default-fg-color:           #E5EAF5;
+  --md-default-fg-color--light:    #C4CCDD;
+  --md-typeset-color:              #E5EAF5;
+  --md-code-bg-color:              #0E142A;
+  --md-code-fg-color:              #C4CCDD;
+}
+
+/* ─── Global typography baseline ─────────────────────────────────────── */
+body, .md-typeset {
+  font-family: var(--font-body);
+  font-feature-settings: "ss01" on, "ss02" on, "kern" on;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typeset {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-family: var(--font-display);
+  font-feature-settings: "ss01" on, "ss02" on, "kern" on;
+  letter-spacing: -0.018em;
+  color: var(--idira-rule);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1,
+[data-md-color-scheme="slate"] .md-typeset h2,
+[data-md-color-scheme="slate"] .md-typeset h3 {
+  color: #F2F4FA;
+}
+
+.md-typeset h2 {
+  font-weight: 500;
+  font-variation-settings: "opsz" 72;
+  font-size: clamp(1.875rem, 3vw, 2.6rem);
+  margin-top: var(--space-9);
+  margin-bottom: var(--space-5);
+  line-height: 1.05;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  font-variation-settings: "opsz" 36;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+/* Cleaner body links — Idira blue with subtle underline */
+.md-typeset a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: background-size 0.18s ease, color 0.18s ease;
+}
+.md-typeset a:hover {
+  color: var(--idira-blue-750);
+  background-size: 100% 2px;
+}
+
+/* ─── Header wordmark — text-only with CSS security-layers mark ─────── */
+.md-header {
+  background: var(--idira-cream);
+  color: var(--idira-rule);
+  border-bottom: 1px solid var(--idira-neutral-200);
+  box-shadow: none;
+}
+[data-md-color-scheme="slate"] .md-header {
+  background: #060A1A;
+  color: #E5EAF5;
+  border-bottom-color: #1B2340;
+}
+
+.md-header__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: "opsz" 18;
+  letter-spacing: -0.01em;
+  font-size: 1.125rem;
+  color: inherit;
+}
+
+/* Replace any inherited wordmark line height noise */
+.md-header__title .md-ellipsis {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-header__title::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  vertical-align: -7px;
+  border-radius: 5px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.4) 0,
+      rgba(255, 255, 255, 0.4) 1.5px,
+      transparent 1.5px,
+      transparent 5px
+    ),
+    linear-gradient(135deg, var(--idira-blue-500) 0%, var(--idira-blue-1000) 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 2px 4px rgba(6, 29, 99, 0.35);
+}
+
+/* Hide the title text on small screens to give the mark room. */
+@media (max-width: 480px) {
+  .md-header__title { font-size: 1rem; }
+}
+
+/* ─── Home page full-bleed canvas ─────────────────────────────────── */
+.idira-home {
+  background: var(--idira-cream);
+}
+[data-md-color-scheme="slate"] .idira-home {
+  background: #060A1A;
+}
+
+.idira-home__article {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.idira-home__article > * {
+  /* Default content sections are contained but full sections (.idira-section--bleed) escape */
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(1rem, 3vw, 3rem);
+}
+
+.idira-home__article > .idira-bleed {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* ============================================================================
+ * HERO
+ * ========================================================================== */
+
+.idira-hero {
+  position: relative;
+  color: var(--idira-neutral-0);
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 0%, rgba(38, 91, 255, 0.55), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(97, 134, 252, 0.35), transparent 60%),
+    linear-gradient(160deg, var(--idira-blue-1000) 0%, var(--idira-blue-900) 35%, var(--idira-blue-750) 100%);
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Vertical "security layers" — animated bars sweeping in from the left.
+   This is the brand's literal metaphor: many parallel layers of protection. */
+.idira-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.045) 0px,
+      rgba(255, 255, 255, 0.045) 2px,
+      transparent 2px,
+      transparent 26px
+    );
+  pointer-events: none;
+  z-index: 1;
+  animation: idira-bars-sweep 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Fine grain — a subtle film texture from CSS noise. */
+.idira-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.11 0 0 0 0 0.39 0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes idira-bars-sweep {
+  from { transform: translateX(-30%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.idira-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 4vw, 4rem) clamp(3rem, 6vw, 5rem);
+}
+
+@media (max-width: 880px) {
+  .idira-hero__inner { grid-template-columns: 1fr; }
+}
+
+/* — Hero left column: display headline + tagline + CTAs ─────────────── */
+.idira-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--idira-blue-100);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(173, 192, 252, 0.35);
+  margin-bottom: 2.25rem;
+  animation: idira-rise 0.7s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.idira-hero__eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--idira-accent-success);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(0, 204, 102, 0.7);
+  animation: idira-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes idira-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.85); }
+}
+
+.idira-hero__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  font-size: clamp(2.75rem, 6.5vw, 5.5rem);
+  margin: 0 0 1.75rem;
+  color: var(--idira-neutral-0);
+  animation: idira-rise 0.85s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.idira-hero__title em {
+  font-style: italic;
+  font-weight: 700;
+  font-variation-settings: "opsz" 144;
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--idira-blue-100) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  padding: 0 0.05em;
+}
+
+.idira-hero__title .idira-strike {
+  position: relative;
+  font-weight: 600;
+  font-style: normal;
+  background: none;
+  -webkit-text-fill-color: var(--idira-neutral-0);
+  color: var(--idira-neutral-0);
+}
+.idira-hero__title .idira-strike::after {
+  content: "";
+  position: absolute;
+  left: -0.05em; right: -0.05em;
+  top: 52%;
+  height: 0.07em;
+  background: var(--idira-blue-250);
+  transform-origin: left center;
+  animation: idira-strike 0.7s 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes idira-strike {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.idira-hero__tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  line-height: 1.55;
+  font-weight: 400;
+  color: rgba(229, 234, 245, 0.92);
+  max-width: 38rem;
+  margin: 0 0 2.5rem;
+  animation: idira-rise 0.85s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.idira-hero__tagline strong {
+  color: var(--idira-neutral-0);
+  font-weight: 600;
+}
+
+.idira-hero__tagline code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.05em 0.4em;
+  border-radius: 4px;
+  color: var(--idira-blue-100);
+}
+
+.idira-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  animation: idira-rise 0.85s 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* CTA buttons — distinctive shape, sharp focus, opinionated hover ───── */
+.idira-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  background-image: none !important;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+  white-space: nowrap;
+}
+
+.idira-cta--primary {
+  background: var(--idira-neutral-0);
+  color: var(--idira-blue-1000) !important;
+  box-shadow:
+    0 2px 0 rgba(6, 29, 99, 0.2),
+    0 8px 24px rgba(6, 29, 99, 0.35);
+}
+
+.idira-cta--primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 0 rgba(6, 29, 99, 0.25),
+    0 12px 32px rgba(6, 29, 99, 0.45);
+  background: var(--idira-cream);
+}
+
+.idira-cta--secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--idira-neutral-0) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+}
+
+.idira-cta--secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.idira-cta__arrow {
+  display: inline-block;
+  transition: transform 0.16s ease;
+}
+
+.idira-cta:hover .idira-cta__arrow {
+  transform: translateX(3px);
+}
+
+/* — Hero right column: isometric cube + spec block ─────────────────── */
+.idira-hero__visual {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2rem;
+  animation: idira-rise 1s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 880px) {
+  .idira-hero__visual { align-items: flex-start; }
+}
+
+/* CSS-only three-face isometric "cube". The three visible faces use the
+   palette's blue gradients to imply solidity + depth — the brand metaphor
+   for the icon, executed as pure CSS so we don't redistribute the official mark. */
+.idira-cube {
+  --cube-size: 180px;
+  position: relative;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  transform-style: preserve-3d;
+  transform: rotateX(-25deg) rotateY(35deg);
+  animation: idira-cube-float 8s ease-in-out infinite;
+}
+
+@keyframes idira-cube-float {
+  0%, 100% { transform: rotateX(-25deg) rotateY(35deg) translateY(0); }
+  50%      { transform: rotateX(-22deg) rotateY(40deg) translateY(-12px); }
+}
+
+.idira-cube__face {
+  position: absolute;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backface-visibility: hidden;
+}
+
+.idira-cube__face--top {
+  background: linear-gradient(135deg, var(--idira-blue-250) 0%, var(--idira-blue-500) 100%);
+  transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.idira-cube__face--front {
+  background: linear-gradient(180deg, var(--idira-blue-500) 0%, var(--idira-blue-750) 100%);
+  transform: translateZ(calc(var(--cube-size) / 2));
+}
+.idira-cube__face--right {
+  background: linear-gradient(180deg, var(--idira-blue-750) 0%, var(--idira-blue-1000) 100%);
+  transform: rotateY(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+
+/* Etched "security layers" lines on the front face */
+.idira-cube__face--front::after {
+  content: "";
+  position: absolute;
+  inset: 12% 18%;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.22) 0,
+      rgba(255, 255, 255, 0.22) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+}
+
+/* Pulsing glow that suggests "active monitoring" — used very sparingly */
+.idira-cube::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(38, 91, 255, 0.25), transparent 65%);
+  filter: blur(28px);
+  z-index: -1;
+  animation: idira-cube-glow 6s ease-in-out infinite;
+}
+@keyframes idira-cube-glow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
+
+/* — Hero spec block — architectural detail line ───────────────────── */
+.idira-hero__spec {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(229, 234, 245, 0.55);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  width: 100%;
+  max-width: 250px;
+}
+.idira-hero__spec hr {
+  border: 0;
+  border-top: 1px dashed rgba(173, 192, 252, 0.25);
+  margin: 0;
+  grid-column: 1 / -1;
+}
+.idira-hero__spec b {
+  color: var(--idira-blue-100);
+  font-weight: 500;
+  font-family: var(--font-numeric);
+  letter-spacing: 0.05em;
+}
+
+/* — Scroll cue at the bottom of the hero ─────────────────────────── */
+.idira-hero__scroll-cue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(229, 234, 245, 0.55);
+  z-index: 2;
+  animation: idira-scroll-pulse 2.4s ease-in-out infinite;
+}
+.idira-hero__scroll-cue::after {
+  content: "";
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(229, 234, 245, 0.6) 0%, transparent 100%);
+}
+@keyframes idira-scroll-pulse {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, 0); }
+  50%      { opacity: 0.9; transform: translate(-50%, 4px); }
+}
+
+/* ============================================================================
+ * NUMBERED SECTIONS
+ * ========================================================================== */
+
+.idira-section {
+  position: relative;
+  padding: var(--space-9) 0 var(--space-8);
+  border-bottom: 1px solid var(--idira-neutral-200);
+}
+
+[data-md-color-scheme="slate"] .idira-section {
+  border-bottom-color: #1B2340;
+}
+
+.idira-section__header {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  margin-bottom: var(--space-7);
+}
+
+@media (max-width: 720px) {
+  .idira-section__header { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+.idira-section__index {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-variation-settings: "opsz" 144;
+  font-feature-settings: "tnum" on, "lnum" on;
+  font-size: clamp(4.5rem, 12vw, 9rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--idira-blue-500);
+  opacity: 0.95;
+  position: relative;
+}
+.idira-section__index::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 1px;
+  background: var(--idira-rule);
+  margin-top: 0.5rem;
+  opacity: 0.35;
+}
+[data-md-color-scheme="slate"] .idira-section__index::after {
+  background: #2A3458;
+  opacity: 1;
+}
+
+.idira-section__heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 90;
+  font-size: clamp(1.875rem, 3.4vw, 2.875rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--idira-rule);
+  margin: 0 0 1.25rem;
+}
+[data-md-color-scheme="slate"] .idira-section__heading {
+  color: #F2F4FA;
+}
+.idira-section__heading em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--idira-blue-750);
+}
+[data-md-color-scheme="slate"] .idira-section__heading em {
+  color: var(--idira-blue-250);
+}
+
+.idira-section__lede {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--idira-neutral-700);
+  max-width: 42rem;
+  margin: 0;
+}
+[data-md-color-scheme="slate"] .idira-section__lede {
+  color: #94A3B8;
+}
+
+.idira-section__lede code,
+.idira-section__lede strong {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: rgba(38, 91, 255, 0.08);
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  color: var(--idira-blue-750);
+}
+[data-md-color-scheme="slate"] .idira-section__lede code {
+  background: rgba(97, 134, 252, 0.12);
+  color: var(--idira-blue-250);
+}
+
+/* ============================================================================
+ * PRINCIPLES — the six "why it's shaped this way" cards
+ * ========================================================================== */
+
+.idira-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.idira-card {
+  position: relative;
+  padding: 1.75rem 1.5rem 1.5rem;
+  background: var(--idira-neutral-0);
+  border: 1px solid var(--idira-neutral-200);
+  border-radius: 6px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.idira-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--idira-blue-500) 0%, var(--idira-blue-250) 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.idira-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(6, 29, 99, 0.12);
+  border-color: var(--idira-blue-100);
+}
+
+.idira-card:hover::before {
+  transform: scaleX(1);
+}
+
+[data-md-color-scheme="slate"] .idira-card {
+  background: #0E142A;
+  border-color: #1B2340;
+}
+[data-md-color-scheme="slate"] .idira-card:hover {
+  border-color: var(--idira-blue-250);
+  box-shadow: 0 8px 32px rgba(38, 91, 255, 0.18);
+}
+
+.idira-card__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--idira-blue-750);
+  background: var(--idira-blue-050);
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+[data-md-color-scheme="slate"] .idira-card__tag {
+  background: rgba(38, 91, 255, 0.15);
+  color: var(--idira-blue-250);
+}
+
+.idira-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "opsz" 24;
+  font-style: italic;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem;
+  color: var(--idira-rule);
+}
+[data-md-color-scheme="slate"] .idira-card__title {
+  color: #F2F4FA;
+}
+
+.idira-card__body {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--idira-neutral-700);
+  margin: 0 0 0.5rem;
+}
+[data-md-color-scheme="slate"] .idira-card__body {
+  color: #94A3B8;
+}
+
+.idira-card__body code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--idira-blue-050);
+  color: var(--idira-blue-750);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+}
+[data-md-color-scheme="slate"] .idira-card__body code {
+  background: rgba(97, 134, 252, 0.12);
+  color: var(--idira-blue-250);
+}
+
+.idira-card__footnote {
+  display: block;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--idira-neutral-500);
+  letter-spacing: 0.04em;
+  border-top: 1px dashed var(--idira-neutral-200);
+}
+[data-md-color-scheme="slate"] .idira-card__footnote {
+  color: #6B7290;
+  border-top-color: #1B2340;
+}
+
+/* Area cards — slightly larger, link-flavoured */
+.idira-card-grid--areas {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+a.idira-card {
+  text-decoration: none !important;
+  background-image: none !important;
+  color: inherit !important;
+}
+a.idira-card:hover {
+  background-image: none !important;
+}
+
+/* ============================================================================
+ * SPEC SHEET — technical data ribbon
+ * ========================================================================== */
+
+.idira-spec-sheet {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0;
+  margin: var(--space-7) 0;
+  border-top: 1px solid var(--idira-rule);
+  border-bottom: 1px solid var(--idira-rule);
+}
+[data-md-color-scheme="slate"] .idira-spec-sheet {
+  border-color: #2A3458;
+}
+
+.idira-spec {
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--idira-neutral-200);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 8rem;
+}
+.idira-spec:last-child { border-right: none; }
+[data-md-color-scheme="slate"] .idira-spec { border-right-color: #1B2340; }
+
+.idira-spec__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--idira-neutral-700);
+}
+[data-md-color-scheme="slate"] .idira-spec__label { color: #94A3B8; }
+
+.idira-spec__value {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: "opsz" 144;
+  font-feature-settings: "tnum" on, "lnum" on;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--idira-blue-750);
+}
+[data-md-color-scheme="slate"] .idira-spec__value { color: var(--idira-blue-250); }
+
+.idira-spec__value sub {
+  font-family: var(--font-mono);
+  font-size: 0.32em;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  vertical-align: 8px;
+  margin-left: 4px;
+  color: var(--idira-neutral-500);
+}
+
+/* ============================================================================
+ * PULL QUOTE — editorial centerpiece
+ * ========================================================================== */
+
+.idira-pullquote {
+  margin: var(--space-9) auto;
+  max-width: 56rem;
+  text-align: left;
+  position: relative;
+  padding: 0 0 0 5rem;
+}
+
+@media (max-width: 600px) {
+  .idira-pullquote { padding-left: 3.5rem; }
+}
+
+.idira-pullquote::before {
+  content: "\201C";
+  position: absolute;
+  top: -1.25rem;
+  left: 0;
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-style: italic;
+  font-variation-settings: "opsz" 144;
+  font-size: 9rem;
+  line-height: 1;
+  color: var(--idira-blue-500);
+  opacity: 0.25;
+}
+
+.idira-pullquote p {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-variation-settings: "opsz" 144;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--idira-rule);
+  margin: 0 0 1rem;
+}
+[data-md-color-scheme="slate"] .idira-pullquote p {
+  color: #F2F4FA;
+}
+
+.idira-pullquote p em {
+  font-weight: 600;
+  color: var(--idira-blue-750);
+  font-style: italic;
+}
+[data-md-color-scheme="slate"] .idira-pullquote p em {
+  color: var(--idira-blue-250);
+}
+
+.idira-pullquote footer {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--idira-neutral-500);
+}
+
+/* ============================================================================
+ * BLUEPRINT — custom HTML/CSS "how it works" diagram
+ *
+ * Replaces a Mermaid flowchart with a blueprint-styled architecture diagram
+ * built from CSS Grid + SVG connector lines. Looks like an engineering drawing.
+ * ========================================================================== */
+
+.idira-blueprint {
+  position: relative;
+  background: var(--idira-paper);
+  border: 1px solid var(--idira-neutral-200);
+  border-radius: 6px;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  margin: var(--space-6) 0 var(--space-7);
+  overflow: hidden;
+}
+
+[data-md-color-scheme="slate"] .idira-blueprint {
+  background: #0B132A;
+  border-color: #1B2340;
+}
+
+/* Blueprint graph-paper background */
+.idira-blueprint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(38, 91, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(38, 91, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+[data-md-color-scheme="slate"] .idira-blueprint::before {
+  background-image:
+    linear-gradient(rgba(97, 134, 252, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(97, 134, 252, 0.06) 1px, transparent 1px);
+}
+
+.idira-blueprint__title {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--idira-blue-750);
+  margin: 0 0 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--idira-blue-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.idira-blueprint__title::after {
+  content: "REV 0.1 · 2026-05";
+  color: var(--idira-neutral-500);
+  font-weight: 400;
+}
+[data-md-color-scheme="slate"] .idira-blueprint__title {
+  color: var(--idira-blue-250);
+  border-bottom-color: #2A3458;
+}
+
+.idira-flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .idira-flow { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .idira-flow { grid-template-columns: 1fr; }
+}
+
+.idira-flow__step {
+  position: relative;
+  background: var(--idira-neutral-0);
+  border: 1px solid var(--idira-blue-100);
+  border-radius: 4px;
+  padding: 1.25rem 1.25rem 1.5rem;
+  z-index: 1;
+}
+[data-md-color-scheme="slate"] .idira-flow__step {
+  background: #131A30;
+  border-color: #2A3458;
+}
+
+.idira-flow__step::after {
+  /* Arrow connector between adjacent steps (using ::after on each step) */
+  content: "→";
+  position: absolute;
+  right: -1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  color: var(--idira-blue-500);
+  font-weight: 400;
+  pointer-events: none;
+}
+.idira-flow__step:last-child::after { display: none; }
+
+@media (max-width: 720px) {
+  .idira-flow__step:nth-child(2n)::after { display: none; }
+  .idira-flow__step:nth-child(2n+1)::after {
+    right: auto; left: 50%; top: auto; bottom: -1.4rem;
+    transform: translateX(-50%) rotate(90deg);
+  }
+}
+@media (max-width: 480px) {
+  .idira-flow__step::after {
+    right: auto !important; left: 50% !important; top: auto !important; bottom: -1.4rem !important;
+    transform: translateX(-50%) rotate(90deg) !important;
+  }
+  .idira-flow__step:last-child::after { display: none !important; }
+}
+
+.idira-flow__num {
+  font-family: var(--font-numeric);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--idira-blue-500);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.idira-flow__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "opsz" 24;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  margin: 0 0 0.6rem;
+  color: var(--idira-rule);
+}
+[data-md-color-scheme="slate"] .idira-flow__title { color: #F2F4FA; }
+
+.idira-flow__body {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--idira-neutral-700);
+  margin: 0;
+}
+[data-md-color-scheme="slate"] .idira-flow__body { color: #94A3B8; }
+
+.idira-flow__body code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--idira-blue-750);
+}
+[data-md-color-scheme="slate"] .idira-flow__body code { color: var(--idira-blue-250); }
+
+/* ============================================================================
+ * TERMINAL — code blocks dressed up as terminal windows
+ * ========================================================================== */
+
+.idira-terminal {
+  background: #0B0F1E;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid #1B2340;
+  box-shadow: 0 12px 36px rgba(6, 29, 99, 0.15);
+}
+
+.idira-terminal__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(180deg, #131A30 0%, #0B0F1E 100%);
+  border-bottom: 1px solid #1B2340;
+}
+
+.idira-terminal__chrome::before {
+  content: "";
+  display: inline-flex;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #FF5F57;
+  box-shadow:
+    20px 0 0 #FEBC2E,
+    40px 0 0 #28C840;
+  margin-right: 56px;
+}
+
+.idira-terminal__chrome span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #6B7290;
+  letter-spacing: 0.05em;
+}
+
+.idira-terminal pre {
+  margin: 0 !important;
+  padding: 1.25rem 1.5rem !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #E5EAF5;
+  overflow-x: auto;
+}
+
+.idira-terminal pre code {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  font-size: inherit;
+}
+
+.idira-terminal .idira-prompt {
+  color: var(--idira-blue-250);
+  user-select: none;
+  margin-right: 0.5em;
+}
+
+.idira-terminal .idira-comment { color: #6B7290; font-style: italic; }
+.idira-terminal .idira-keyword { color: var(--idira-blue-250); }
+.idira-terminal .idira-string  { color: #A8CFFF; }
+
+/* ============================================================================
+ * FOOTER (page-level — used by the home page only)
+ * ========================================================================== */
+
+.idira-page-footer {
+  margin: var(--space-9) 0 var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--idira-rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: end;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--idira-neutral-700);
+}
+[data-md-color-scheme="slate"] .idira-page-footer {
+  border-top-color: #2A3458;
+  color: #94A3B8;
+}
+
+.idira-page-footer__sig {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.15rem;
+  text-transform: none;
+  letter-spacing: -0.005em;
+  color: var(--idira-blue-750);
+}
+[data-md-color-scheme="slate"] .idira-page-footer__sig { color: var(--idira-blue-250); }
+
+.idira-page-footer__meta a {
+  color: inherit;
+  background-image: none !important;
+}
+.idira-page-footer__meta a:hover {
+  color: var(--idira-blue-500);
+}
+
+.idira-page-footer__disclaimer {
+  grid-column: 1 / -1;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--idira-neutral-500);
+  max-width: 56rem;
+  margin-top: 1rem;
+}
+
+/* ============================================================================
+ * CATALOG (used on docs/ops/ landing — keeps backward-compatible class)
+ * ========================================================================== */
+
+/* legacy idira-card-grid still works for ops/ pages — re-styled above. */
+
+/* ============================================================================
+ * BADGES (per-op risk + tool)
+ * ========================================================================== */
+
+.idira-badge {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.idira-badge--read        { background: rgba(0, 192, 232, 0.15); color: #006A82; }
+.idira-badge--mutate      { background: rgba(255, 203, 6, 0.18); color: #7A5C00; }
+.idira-badge--destructive { background: rgba(200, 70, 36, 0.18); color: #7C2A11; }
+.idira-badge--terraform   { background: var(--idira-blue-050); color: var(--idira-blue-750); }
+.idira-badge--ark         { background: rgba(97, 134, 252, 0.18); color: var(--idira-blue-750); }
+.idira-badge--conjur      { background: rgba(6, 29, 99, 0.12); color: var(--idira-blue-1000); }
+
+/* ============================================================================
+ * MOTION RESPECT
+ * ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

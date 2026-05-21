@@ -1,0 +1,114 @@
+site_name: Idira Admin Skills
+site_url: https://infamousjoeg.github.io/idira-admin-skills/
+site_description: A Claude Code plugin + Terraform catalog for administering Idira (CyberArk Identity Security Platform) tenants via natural-language prompts. Captures successful operations as reusable Terraform modules and ark CLI recipes.
+site_author: Joe Garcia
+repo_url: https://github.com/infamousjoeg/idira-admin-skills
+repo_name: infamousjoeg/idira-admin-skills
+edit_uri: edit/main/docs/
+copyright: Apache 2.0 © 2026 Joe Garcia · Built in the open. "Idira" and "CyberArk" are trademarks of their respective owners.
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  language: en
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - navigation.path
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - toc.follow
+  palette:
+    # Light mode — Idira Identity Blue 500 as primary
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode — deeper Identity Blue (1000) for primary, lighter for accent
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    # Body font shipped via Material's Google Fonts loader. Display (Fraunces) and
+    # tabular display (Fragment Mono) loaded by docs/overrides/main.html.
+    text: IBM Plex Sans
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/idira.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/infamousjoeg
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/joegarciacyberark/
+  generator: false  # Hide "Made with Material for MkDocs"
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.smartsymbols
+
+plugins:
+  - search:
+      lang: en
+  - tags
+
+nav:
+  - Home: index.md
+  - Get started: getting-started.md
+  - Adapt for your tenant: adapt-for-your-tenant.md
+  - Catalog:
+      - ops/index.md
+      - Identity: ops/identity/
+      - Secrets Manager: ops/secrets-manager/
+      - Privilege Cloud: ops/privilege-cloud/
+      - SIA: ops/sia/
+      - Secrets Hub: ops/secrets-hub/
+      - Connector Manager: ops/connector-manager/
+      - Scripts: ops/scripts/
+  - GitHub: https://github.com/infamousjoeg/idira-admin-skills

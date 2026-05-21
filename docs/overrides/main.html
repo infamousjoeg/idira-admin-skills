@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{# Load variable display fonts not provided by Material's Google Fonts loader. #}
+{% block extrahead %}
+  {{ super() }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,200..900,0..100;1,9..144,200..900,0..100&family=Fragment+Mono&display=swap">
+  <meta name="theme-color" content="#061D63">
+  <meta property="og:title" content="Idira Admin Skills">
+  <meta property="og:description" content="Prompt Claude — or any AI agent — to administer your Idira tenant. Every successful operation becomes a reusable Terraform module.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+{% endblock %}
