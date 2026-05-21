@@ -162,6 +162,20 @@ body, .md-typeset {
   border-bottom-color: #1B2340;
 }
 
+/* Material's `.md-header__topic` is a position:absolute "title that slides into the
+   tabs row on scroll". With `navigation.tabs.sticky`, this overlaps the tabs row
+   when the page's <h1> isn't where Material expects it (our custom hero h1 is
+   outside <article>, so Material can never find it and keeps the topic visible).
+   Give it an opaque background + higher z-index so when it does cover the tabs,
+   it covers them cleanly instead of bleeding through. */
+.md-header__topic {
+  background-color: var(--idira-cream);
+  z-index: 5;
+}
+[data-md-color-scheme="slate"] .md-header__topic {
+  background-color: #060A1A;
+}
+
 .md-header__title {
   font-family: var(--font-display);
   font-weight: 700;
