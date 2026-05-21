@@ -162,16 +162,6 @@ body, .md-typeset {
   border-bottom-color: #1B2340;
 }
 
-/* Material's `.md-header__topic` is a position:absolute "title that slides into
-   the tabs row on scroll". With `navigation.tabs.sticky`, this overlaps the tabs
-   row when the page's <h1> isn't where Material expects it (our custom hero h1 is
-   outside <article>, so Material can never find it and keeps the topic visible —
-   covering the middle tab labels). We don't need this duplicate title — the page
-   title is established by the page content + tab itself — so hide it entirely. */
-.md-header__topic {
-  display: none;
-}
-
 .md-header__title {
   font-family: var(--font-display);
   font-weight: 700;
@@ -179,6 +169,11 @@ body, .md-typeset {
   letter-spacing: -0.01em;
   font-size: 1.125rem;
   color: inherit;
+  /* Default is `display: block`, which pushes the block-level `.md-header__ellipsis`
+     onto a second line below the inline-block `::before` cube mark — burying the
+     site name beneath the visible header. Flex puts mark + ellipsis on one row. */
+  display: flex;
+  align-items: center;
 }
 
 /* Replace any inherited wordmark line height noise */
