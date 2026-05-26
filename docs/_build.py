@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from textwrap import dedent
 
 REPO = Path(__file__).resolve().parent.parent
 DOCS_OPS = REPO / "docs" / "ops"
@@ -75,46 +74,68 @@ def op_page_body(area: str, op: str, kind: str) -> str:
 
 def area_index(area_slug: str, area_label: str, area_desc: str, ops: list[tuple[str, str, str]]) -> str:
     """Render a catalog landing for an area."""
+    # NOTE: templates are written flush-left (no indentation, no `dedent`). `dedent`
+    # was previously used here, but its common-leading-whitespace algorithm gets
+    # defeated by multi-line `{cards}` interpolation — once `cards` contains a
+    # newline-joined block, the lines after the first are at column 0, dedent
+    # finds 0 common indent, and the surrounding template lines keep their
+    # original 4-/8-space indent — which Markdown then treats as a code block.
     if not ops:
-        return dedent(f"""\
-            # {area_label}
-
-            > {area_desc}
-
-            _No ops captured yet in this area. The next ad-hoc op you ask Claude to do here will seed it._
-            """)
+        return (
+            f"# {area_label}\n"
+            f"\n"
+            f"> {area_desc}\n"
+            f"\n"
+            f"_No ops captured yet in this area. "
+            f"The next ad-hoc op you ask Claude to do here will seed it._\n"
+        )
+    # Grid div has no `markdown` attribute — contents are raw HTML, so
+    # Python-Markdown leaves them alone (previously it mangled the first card,
+    # hoisting its inner h3/p out of the <a> and duplicating the wrapper).
+    # Inner markup uses BEM classes (.idira-card__title / .idira-card__body)
+    # so card-specific styles in idira.css apply instead of the global
+    # .md-typeset h3/p rules.
     cards = "\n".join(
-        f'<a class="idira-card" href="{op_slug}/"><h3>{op_label}</h3><p>{op_summary}</p></a>'
+        f'<a class="idira-card" href="{op_slug}/">'
+        f'<div class="idira-card__title">{op_label}</div>'
+        f'<div class="idira-card__body">{op_summary}</div>'
+        f'</a>'
         for op_slug, op_label, op_summary in ops
     )
-    return dedent(f"""\
-        # {area_label}
-
-        > {area_desc}
-
-        <div class="idira-card-grid" markdown>
-        {cards}
-        </div>
-        """)
+    return (
+        f"# {area_label}\n"
+        f"\n"
+        f"> {area_desc}\n"
+        f"\n"
+        f'<div class="idira-card-grid">\n'
+        f"{cards}\n"
+        f"</div>\n"
+    )
 
 
 def overall_index(area_summaries: list[tuple[str, str, str, int]]) -> str:
     """Catalog top-level page."""
+    # See area_index() for why the grid div drops `markdown` and the cards use
+    # BEM .idira-card__title / .idira-card__body instead of <h3>/<p>.
     cards = "\n".join(
-        f'<a class="idira-card" href="{slug}/"><h3>{label} <span class="idira-badge idira-badge--terraform">{count}</span></h3><p>{desc}</p></a>'
+        f'<a class="idira-card" href="{slug}/">'
+        f'<div class="idira-card__title">{label} '
+        f'<span class="idira-badge idira-badge--terraform">{count}</span></div>'
+        f'<div class="idira-card__body">{desc}</div>'
+        f'</a>'
         for slug, label, desc, count in area_summaries
     )
-    return dedent(f"""\
-        # Catalog
-
-        Browseable index of every captured operation. Each op is a Terraform module (`tf/<area>/<op>/`)
-        or a script (`scripts/<area>/<op>/`) with a `README.md`, an `AGENTS.md` for AI-driven adaptation,
-        and an auto-generated `SKILL.md` so Claude Code (or any AI agent) can re-invoke it.
-
-        <div class="idira-card-grid" markdown>
-        {cards}
-        </div>
-        """)
+    return (
+        "# Catalog\n"
+        "\n"
+        "Browseable index of every captured operation. Each op is a Terraform module (`tf/<area>/<op>/`)\n"
+        "or a script (`scripts/<area>/<op>/`) with a `README.md`, an `AGENTS.md` for AI-driven adaptation,\n"
+        "and an auto-generated `SKILL.md` so Claude Code (or any AI agent) can re-invoke it.\n"
+        "\n"
+        '<div class="idira-card-grid">\n'
+        f"{cards}\n"
+        "</div>\n"
+    )
 
 
 def main():

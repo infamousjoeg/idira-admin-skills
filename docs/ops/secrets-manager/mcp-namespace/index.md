@@ -67,11 +67,20 @@ cp examples/default/terraform.tfvars.example terraform.tfvars
 $REPO/lib/tf-wrap.sh apply tf/secrets-manager/mcp-namespace
 ```
 
-## Local prerequisite — Terraform version
+## Local prerequisite — `tofu` (OpenTofu) recommended
 
-This module pins `cyberark/conjur >= 0.8.4`. Terraform **1.5.7** has trouble installing this version (provider-publishing metadata isn't recognized — likely signing-key chain mismatch). **Use Terraform 1.6 or newer.** Update via `brew upgrade terraform` (if you accept the BUSL-1.1 license) or use OpenTofu (`brew install opentofu`) which is API-compatible.
+This module pins `cyberark/conjur >= 0.8.4`. **Terraform 1.5.7** (the last MPL-2.0 release in Homebrew) can't install that version. Either:
+
+- Install **OpenTofu** (recommended — MPL-2.0, drop-in compatible): `brew install opentofu`, then use `tofu` instead of `terraform`. `lib/tf-wrap.sh` auto-detects either binary.
+- Install Terraform 1.6+ directly from HashiCorp (BUSL 1.1).
 
 ## Caveats
+
+### `tofu validate` doesn't work — but `plan` and `apply` do
+
+The provider's `ValidateConfig` checks attribute values against the raw config (AST) instead of the resolved variable values. So `branch = var.parent_server_branch` is seen as "empty" during `validate`, even with a default. **This is a provider-side quirk, not a bug in this module** — hardcoded values pass validate fine.
+
+Skip `tofu validate` for this module. The module IS correct: `tofu plan` resolves variables before sending to the provider, so plan + apply work. `lib/tf-wrap.sh apply` is the canonical entry point.
 
 - **`-parallelism=1` may be required** for the first apply. Per the provider's [Best Practices](https://registry.terraform.io/providers/cyberark/conjur/latest/docs), Secrets Manager doesn't allow simultaneous policy loads under the same branch. Our `depends_on` chain should serialize the four resources correctly, but if you hit a `409 Conflict`, retry with `terraform apply -parallelism=1`.
 - **`conjur_group` is write-only.** Per the provider docs, group state isn't tracked precisely — changes outside Terraform (e.g., via `conjur policy load`) can cause drift. Re-running this module is safe but won't reconcile a manually-edited group.

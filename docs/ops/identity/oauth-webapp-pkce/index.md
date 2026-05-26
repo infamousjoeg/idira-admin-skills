@@ -67,6 +67,19 @@ token_endpoint_path = "/Oauth2/Token/witty-muffin"
 redirect_uri_to_set = "http://localhost:3000/callback"
 ```
 
+## Prerequisite — Service User must have webapp-management rights
+
+The Identity Service User used by the provider needs **either** of:
+- Membership in the **"System Administrator"** role, OR
+- Explicit **"Application Management"** rights on the tenant
+
+Without one of these, `terraform apply` against this module returns the Idira error `_I18N_System.UnauthorizedAccessException` ("You are not authorized to perform this operation"). The plan succeeds; only the create call fails. To grant:
+
+1. Open the Idira admin UI at `${CYBERARK_IDENTITY_API_URL}/admin/` (resolved by `lib/discovery.sh`).
+2. Navigate to **Core Services → Users**, find your Service User, click into it.
+3. Either add it to the **System Administrator** role (broad) or grant **Application Management** under the user's permissions tab (narrower, recommended for least-privilege).
+4. Re-run `terraform apply`.
+
 ## Caveats
 
 **`redirect_uri` requires a follow-up step (v0.3.3).** The `cyberark/idsec` v0.3.3 resource schema for `idsec_identity_webapp` does *not* expose the `OpenIdConnectRedirects` field. After `terraform apply` succeeds, set the redirect URI via one of:
